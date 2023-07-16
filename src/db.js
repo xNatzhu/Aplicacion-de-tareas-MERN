@@ -8,6 +8,13 @@ const connectDB = async()=>{
         
         console.log("CONEXION DB EXITOSA"); //test
     }catch(error){
+        
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while registering the user.",
+            error: error.message,
+          });
+
         console.log(error);
     }
 }
