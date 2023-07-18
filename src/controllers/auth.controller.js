@@ -86,5 +86,17 @@ const logout = (req, res) =>{
     return res.status(200).json({msg:"Cerrar seccion"})
 }
 
+const profile = async(req, res)=>{
+    const userFound = await User.findById(req.user.payload.id);
+   if(!userFound){
+    return res.status(400).json({msg:"Usuario no encontrado"})
+   }
+   return res.json({
+        id:userFound._id,
+        userName:userFound.username,
+        email:userFound.email
+   })
+    
+}
 
-export {register, login, logout}
+export {register, login, logout, profile}
