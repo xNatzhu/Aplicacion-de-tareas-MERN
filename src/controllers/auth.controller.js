@@ -18,11 +18,11 @@ const register = async(req, res)=>{
 
     //encriptacion de contraseña
     const passEncrypt = await bcrypt.hash(password, 10); 
-
+    console.log(passEncrypt)
     const newUser = new User({
         username,
         email,
-        passEncrypt
+        password: passEncrypt
     });
 
     //espera que el objeto se almacena y lo guarda en la base de datos.
@@ -33,6 +33,39 @@ const register = async(req, res)=>{
     res.cookie("token", token)
     res.json({
         msg:"Usuario creado sactifactoriamente"
+    })
+    //el id del usuario, la clave del token, el tiempo de expiracion
+    
+   } catch (error) {
+
+     res.send(error)
+   }
+};
+
+const login = async(req, res)=>{
+    const {email, password} = req.body;
+
+   try {
+
+    //busca al usuario
+    const userFound = await User.findOne({email})
+    
+    if(!userFound){
+        return res.status(400)
+    }
+    console.log(userFound, userFound.password)
+    //compara la contraseña con la db
+    const passCompare = await bcrypt.compare(password, userFound.password); 
+
+    if(!passCompare){
+        return res.status(400).json({msg:"Dato ingresado incorrecto"})
+    }
+
+    const token = await createAccessToken({id:userFound._id,})
+    //almacenarlo en una cookie
+    res.cookie("token", token)
+    res.json({
+        msg:"Usuario logeado correctamente"
     })
     //el id del usuario, la clave del token, el tiempo de expiracion
    /* res.json({
@@ -48,9 +81,10 @@ const register = async(req, res)=>{
    }
 };
 
-const login = (req, res)=>{
-    res.send("login");
+const logout = (req, res) =>{
+    res.cookie("token", "");
+    return res.status(200).json({msg:"Cerrar seccion"})
 }
 
 
-export {register, login}
+export {register, login, logout}
