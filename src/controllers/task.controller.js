@@ -35,13 +35,15 @@ const getTask = async (req, res) => {
 
 const createTask = async (req, res) => {
     try {
-        const { title, description, date, user } = req.body;
+        const { title, description, date, user, category, progress} = req.body;
         console.log(req.body);
         const newTask = new Task({
             title,
             description,
             date,
             user: req.user.id,
+            category, 
+            progress,
         });
         console.log(newTask);
         const saveTask = await newTask.save();

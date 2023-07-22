@@ -18,6 +18,14 @@ const taskSchema = new mongoose.Schema({
         type:Date,
         default: Date.now,
     },
+    category:{
+        type:String,
+        default:"none",
+    },
+    progress:{
+        type:String,
+        default:"En Progreso",
+    }
 },{
     timestamps:true
 })
