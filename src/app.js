@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
-import router from "./routes/auth.routes.js";
+import authRouter from "./routes/auth.routes.js";
+import taskRouter from "./routes/task.routes.js";
 
 //para poder observar las cookies:
 import cookieParser from "cookie-parser";
@@ -15,8 +16,8 @@ app.use(morgan("dev")) //nos dara en consola texto sobre los movimientos a las p
 //conviere la coockie en un objeto json.
 app.use(cookieParser())
 
-
-app.use("/api",router) //va estar usando las rutas.
+app.use("/api", authRouter);
+app.use("/api", taskRouter);
 
 
 export {port, app};
