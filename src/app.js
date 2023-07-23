@@ -2,12 +2,16 @@ import express from "express";
 import morgan from "morgan";
 import authRouter from "./routes/auth.routes.js";
 import taskRouter from "./routes/task.routes.js";
-
+import cors from "cors"
 //para poder observar las cookies:
 import cookieParser from "cookie-parser";
 
 const app = express();
 const port = 3000
+//permite que todos los dominios o cualquier dominio pueda hacer la peticion o especificar con origin
+app.use(cors({
+    origin:"http://localhost:5173"
+}))
 
 app.use(express.json()); //va convertir los datos enviado al body en un objeto de JS.
 
